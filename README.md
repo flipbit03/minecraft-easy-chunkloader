@@ -9,21 +9,22 @@ plugin, rebuilt from scratch and MIT-licensed.
 
 ## Features
 
-- **Placeable Chunk Loader block** (a renamed Lodestone by default — configurable).
-  Place it and the surrounding chunks stay loaded *and ticking*.
+- **Admin-distributed Chunk Loader block** (a renamed Lodestone by default — configurable).
+  There is **no crafting recipe**: loaders can only be obtained from an admin via
+  `/cl give`. Place one and the surrounding chunks stay loaded *and ticking*.
+- **Grief-proof.** Once placed, a loader block **can only be mined by an admin/op** — normal
+  players can't break, relocate or steal it. Loaders also shrug off explosions, fire and
+  pistons, so an active loader (and its chunk tickets) can't be lost by accident.
 - **Nicknames.** Rename the item in an anvil before placing (e.g. `Iron Farm`,
   `Gold Farm @ Nether`) or use `/cl name <text>` — the nickname shows up in the list and
   the management menu so you always know which coordinates do what.
 - **Survives restarts.** Loaders are saved to `loaders.yml` and their chunk tickets are
   re-applied automatically on every server start (including worlds loaded later by
   Multiverse).
-- **Management GUI** — `/cl` opens a menu of your loaders; left-click to teleport to one,
-  shift-click to remove it. Admins can browse everyone's loaders with `/cl gui all`.
+- **Management GUI** — `/cl` opens a menu of your loaders; left-click to teleport to one
+  (admins can shift-click to remove). Admins can browse everyone's loaders with `/cl gui all`.
 - **Per-player limits** via config or numeric permission, with an unlimited bypass.
 - **Configurable radius** — load just the loader's chunk, or a square area around it.
-- **Tamper-resistant** — loader blocks shrug off explosions, fire and pistons so an active
-  loader (and its tickets) can't be lost by accident; only a deliberate break removes one.
-- **Crafting recipe** (toggleable) so loaders are obtainable in survival.
 - **Ambient particles** above active loaders so you can see them working.
 - Every message is MiniMessage and lives in `config.yml` — fully re-skinnable / translatable.
 
@@ -60,18 +61,17 @@ Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25
 
 ## Quick start
 
-1. **Get a Chunk Loader.** Craft one (default recipe: 4 iron blocks in the corners,
-   4 lodestone on the edges, an eye of ender in the center), or as an admin run
-   `/cl give <you> 1`.
+1. **Get a Chunk Loader** from an admin — there's no recipe. An admin runs
+   `/cl give <player> [amount]` (or `/cl give <you> 1` for themselves).
 2. *(optional)* **Name it.** Rename the item in an anvil — e.g. `Iron Farm` — so you can
    tell your loaders apart later.
 3. **Place it** at your farm/contraption. You'll see a confirmation message and the
    surrounding chunks (a 3×3 area by default) are now kept loaded and ticking.
 4. **Verify.** Walk far away (or have everyone log off) and your farm keeps running.
-   Use `/cl list` or open the menu with `/cl` to see all your loaders; click one to
-   teleport to it, shift-click to remove it.
-5. **Remove** a loader by breaking the block (you get the item back, nickname intact) or
-   with `/cl remove` while looking at it.
+   Use `/cl list` or open the menu with `/cl` to see your loaders and teleport to them.
+5. **Removing** a loader is admin-only (anti-grief): an admin mines the block (the item
+   drops back, nickname intact), uses `/cl remove` while looking at it, or shift-clicks it
+   in `/cl gui all`. Normal players cannot break or move a placed loader.
 
 > Loaders persist across restarts automatically — there's nothing to re-arm after a reboot.
 
@@ -85,10 +85,10 @@ All under `/chunkloader` (aliases `/cl`, `/chunkload`):
 | `/cl gui [all]` | Open the GUI (`all` = every loader, admin only) |
 | `/cl list [all]` | List loaders in chat |
 | `/cl info` | Inspect the loader you are looking at / standing on |
-| `/cl name <nickname...>` | Rename that loader |
-| `/cl remove` | Remove that loader (returns the item) |
-| `/cl give <player> [amount]` | Give Chunk Loader items (admin) |
-| `/cl reload` | Reload `config.yml` (admin) |
+| `/cl name <nickname...>` | Rename that loader (owner or admin) |
+| `/cl remove` | Remove that loader, returns the item (**admin only**) |
+| `/cl give <player> [amount]` | Give Chunk Loader items (**admin only**) |
+| `/cl reload` | Reload `config.yml` (**admin only**) |
 
 ## Permissions
 
@@ -102,8 +102,8 @@ All under `/chunkloader` (aliases `/cl`, `/chunkload`):
 ## Configuration
 
 See [`src/main/resources/config.yml`](src/main/resources/config.yml): loader material,
-chunk radius (and a `max-radius` safety cap), per-player limits, crafting toggle, particle
-effect, revalidation interval, and all messages.
+chunk radius (and a `max-radius` safety cap), per-player limits, particle effect,
+revalidation interval, and all messages.
 
 ## Building
 

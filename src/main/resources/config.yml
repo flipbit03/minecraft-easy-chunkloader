@@ -28,11 +28,6 @@ limits:
   # Players with chunkloader.unlimited (default: op) ignore the cap entirely.
   # You can also grant a numeric override permission, e.g. chunkloader.limit.20
 
-# Give players a crafting recipe for the Chunk Loader item.
-# Recipe (shaped): 4x iron block at the corners, ender eye center, lodestone edges.
-crafting:
-  enabled: true
-
 # Ambient particle shown above active loaders so players can see they're working.
 particles:
   enabled: true
@@ -58,6 +53,7 @@ messages:
   name-usage: '<yellow>Usage: /<command> name <nickname...></yellow>'
   limit-reached: '<red>You have reached your chunk loader limit of <white><limit></white>.</red>'
   no-permission: '<red>You do not have permission to do that.</red>'
+  protected: '<red>This chunk loader is protected - only an admin can remove it.</red>'
   not-a-loader: '<red>You are not looking at (or standing on) a chunk loader.</red>'
   given: '<green>Gave <white><amount></white> chunk loader(s) to <white><player></white>.</green>'
   received: '<green>You received <white><amount></white> chunk loader(s).</green>'

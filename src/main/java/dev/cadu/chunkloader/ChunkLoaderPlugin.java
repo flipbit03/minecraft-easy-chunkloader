@@ -5,15 +5,10 @@ import dev.cadu.chunkloader.listener.GuiListener;
 import dev.cadu.chunkloader.listener.LoaderBlockListener;
 import dev.cadu.chunkloader.listener.WorldListener;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
-import org.bukkit.inventory.RecipeChoice;
-import org.bukkit.inventory.ShapedRecipe;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -25,7 +20,6 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
 
     private BukkitTask particleTask;
     private BukkitTask revalidateTask;
-    private NamespacedKey recipeKey;
 
     @Override
     public void onEnable() {
@@ -33,7 +27,6 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
         this.item = new ChunkLoaderItem(this);
         this.manager = new ChunkLoaderManager(this);
         this.messages = new Messages(this);
-        this.recipeKey = new NamespacedKey(this, "chunk_loader");
 
         manager.load();
         manager.reapplyAll();
@@ -49,7 +42,6 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
             command.setTabCompleter(executor);
         }
 
-        registerRecipe();
         restartTasks();
 
         getLogger().info("minecraft-easy-chunkloader enabled - " + manager.all().size()
@@ -137,20 +129,5 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
             Location at = new Location(world, loader.x() + 0.5, loader.y() + 1.1, loader.z() + 0.5);
             world.spawnParticle(particle, at, count, 0.25, 0.3, 0.25, 0.0);
         }
-    }
-
-    // ---- crafting recipe ------------------------------------------------------------
-
-    private void registerRecipe() {
-        getServer().removeRecipe(recipeKey);
-        if (!getConfig().getBoolean("crafting.enabled", true)) {
-            return;
-        }
-        ShapedRecipe recipe = new ShapedRecipe(recipeKey, item.create(1));
-        recipe.shape("ILI", "LEL", "ILI");
-        recipe.setIngredient('I', Material.IRON_BLOCK);
-        recipe.setIngredient('L', new RecipeChoice.MaterialChoice(Material.LODESTONE));
-        recipe.setIngredient('E', Material.ENDER_EYE);
-        getServer().addRecipe(recipe);
     }
 }

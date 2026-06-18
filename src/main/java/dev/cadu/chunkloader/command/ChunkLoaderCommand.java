@@ -170,13 +170,13 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             sender.sendMessage(Component.text("Only players can use that.", NamedTextColor.RED));
             return;
         }
+        if (!player.hasPermission("chunkloader.admin")) {
+            plugin.messages().send(player, "protected");
+            return;
+        }
         Loader loader = targetLoader(player);
         if (loader == null) {
             plugin.messages().send(player, "not-a-loader");
-            return;
-        }
-        if (!loader.owner().equals(player.getUniqueId()) && !player.hasPermission("chunkloader.admin")) {
-            plugin.messages().send(player, "no-permission");
             return;
         }
         plugin.manager().removeAt(loader.location());

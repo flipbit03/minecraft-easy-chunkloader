@@ -37,8 +37,8 @@ public final class GuiListener implements Listener {
         }
 
         if (event.isShiftClick()) {
-            if (!loader.owner().equals(player.getUniqueId()) && !player.hasPermission("chunkloader.admin")) {
-                plugin.messages().send(player, "no-permission");
+            if (!player.hasPermission("chunkloader.admin")) {
+                plugin.messages().send(player, "protected");
                 return;
             }
             Location location = loader.location();

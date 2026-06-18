@@ -61,7 +61,7 @@ public final class ChunkLoaderItem {
                         .decoration(TextDecoration.ITALIC, false),
                 Component.text("nickname (e.g. \"Iron Farm\").", NamedTextColor.DARK_GRAY)
                         .decoration(TextDecoration.ITALIC, false),
-                Component.text("Break it to get it back.", NamedTextColor.DARK_GRAY)
+                Component.text("Only an admin can remove it once placed.", NamedTextColor.DARK_GRAY)
                         .decoration(TextDecoration.ITALIC, false)
         ));
         meta.getPersistentDataContainer().set(markerKey, PersistentDataType.BYTE, (byte) 1);

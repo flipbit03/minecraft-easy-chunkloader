@@ -68,9 +68,11 @@ public final class LoaderBlockListener implements Listener {
             return;
         }
         Player player = event.getPlayer();
-        if (!loader.owner().equals(player.getUniqueId()) && !player.hasPermission("chunkloader.admin")) {
+        // Anti-grief: a loader block can only be mined by an admin/op. Everyone else is
+        // blocked outright so a normal player can't break, relocate or steal a loader.
+        if (!player.hasPermission("chunkloader.admin")) {
             event.setCancelled(true);
-            plugin.messages().send(player, "no-permission");
+            plugin.messages().send(player, "protected");
             return;
         }
 
