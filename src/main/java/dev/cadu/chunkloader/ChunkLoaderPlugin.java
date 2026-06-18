@@ -1,0 +1,156 @@
+package dev.cadu.chunkloader;
+
+import dev.cadu.chunkloader.command.ChunkLoaderCommand;
+import dev.cadu.chunkloader.listener.GuiListener;
+import dev.cadu.chunkloader.listener.LoaderBlockListener;
+import dev.cadu.chunkloader.listener.WorldListener;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
+import org.bukkit.Particle;
+import org.bukkit.World;
+import org.bukkit.command.PluginCommand;
+import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.RecipeChoice;
+import org.bukkit.inventory.ShapedRecipe;
+import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.scheduler.BukkitTask;
+
+public final class ChunkLoaderPlugin extends JavaPlugin {
+
+    private ChunkLoaderItem item;
+    private ChunkLoaderManager manager;
+    private Messages messages;
+
+    private BukkitTask particleTask;
+    private BukkitTask revalidateTask;
+    private NamespacedKey recipeKey;
+
+    @Override
+    public void onEnable() {
+        saveDefaultConfig();
+        this.item = new ChunkLoaderItem(this);
+        this.manager = new ChunkLoaderManager(this);
+        this.messages = new Messages(this);
+        this.recipeKey = new NamespacedKey(this, "chunk_loader");
+
+        manager.load();
+        manager.reapplyAll();
+
+        getServer().getPluginManager().registerEvents(new LoaderBlockListener(this), this);
+        getServer().getPluginManager().registerEvents(new GuiListener(this), this);
+        getServer().getPluginManager().registerEvents(new WorldListener(this), this);
+
+        PluginCommand command = getCommand("chunkloader");
+        if (command != null) {
+            ChunkLoaderCommand executor = new ChunkLoaderCommand(this);
+            command.setExecutor(executor);
+            command.setTabCompleter(executor);
+        }
+
+        registerRecipe();
+        restartTasks();
+
+        getLogger().info("minecraft-easy-chunkloader enabled - " + manager.all().size()
+                + " loader(s) keeping chunks alive.");
+    }
+
+    @Override
+    public void onDisable() {
+        cancelTasks();
+        if (manager != null) {
+            // Free the chunks so a reload/disable doesn't leave dangling tickets; loaders.yml
+            // still holds them and reapplyAll() restores everything on the next enable.
+            manager.releaseAllTickets();
+        }
+    }
+
+    // ---- accessors ------------------------------------------------------------------
+
+    public ChunkLoaderItem item() {
+        return item;
+    }
+
+    public ChunkLoaderManager manager() {
+        return manager;
+    }
+
+    public Messages messages() {
+        return messages;
+    }
+
+    /** Human label for a player's limit: the number, or {@code ∞} when unlimited. */
+    public String limitLabel(Player player) {
+        int limit = manager.effectiveLimit(player);
+        return limit < 0 ? "∞" : String.valueOf(limit);
+    }
+
+    // ---- scheduled tasks ------------------------------------------------------------
+
+    /** (Re)schedules the ambient-particle and revalidation tasks from current config. */
+    public void restartTasks() {
+        cancelTasks();
+
+        if (getConfig().getBoolean("particles.enabled", true)) {
+            long interval = Math.max(1, getConfig().getLong("particles.interval-ticks", 40));
+            particleTask = getServer().getScheduler().runTaskTimer(this, this::showParticles, interval, interval);
+        }
+
+        long revalidate = getConfig().getLong("revalidate-interval-ticks", 1200);
+        if (revalidate > 0) {
+            revalidateTask = getServer().getScheduler()
+                    .runTaskTimer(this, manager::revalidate, revalidate, revalidate);
+        }
+    }
+
+    private void cancelTasks() {
+        if (particleTask != null) {
+            particleTask.cancel();
+            particleTask = null;
+        }
+        if (revalidateTask != null) {
+            revalidateTask.cancel();
+            revalidateTask = null;
+        }
+    }
+
+    private void showParticles() {
+        Particle particle;
+        try {
+            particle = Particle.valueOf(getConfig().getString("particles.type", "ELECTRIC_SPARK").toUpperCase());
+        } catch (IllegalArgumentException ex) {
+            return; // bad particle name in config; skip silently until corrected
+        }
+        if (particle.getDataType() != Void.class) {
+            return; // particle needs extra data we don't supply; ignore to stay safe
+        }
+        int count = Math.max(1, getConfig().getInt("particles.count", 8));
+        for (Loader loader : manager.all()) {
+            World world = loader.bukkitWorld();
+            if (world == null || !world.isChunkLoaded(loader.chunkX(), loader.chunkZ())) {
+                continue;
+            }
+            if (world.getBlockAt(loader.x(), loader.y(), loader.z()).getType() != item.material()) {
+                continue;
+            }
+            Location at = new Location(world, loader.x() + 0.5, loader.y() + 1.1, loader.z() + 0.5);
+            world.spawnParticle(particle, at, count, 0.25, 0.3, 0.25, 0.0);
+        }
+    }
+
+    // ---- crafting recipe ------------------------------------------------------------
+
+    private void registerRecipe() {
+        getServer().removeRecipe(recipeKey);
+        if (!getConfig().getBoolean("crafting.enabled", true)) {
+            return;
+        }
+        ShapedRecipe recipe = new ShapedRecipe(recipeKey, item.create(1));
+        recipe.shape("ILI", "LEL", "ILI");
+        recipe.setIngredient('I', Material.IRON_BLOCK);
+        recipe.setIngredient('L', new RecipeChoice.MaterialChoice(Material.LODESTONE));
+        recipe.setIngredient('E', Material.ENDER_EYE);
+        getServer().addRecipe(recipe);
+    }
+}

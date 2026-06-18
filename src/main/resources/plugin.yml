@@ -1,0 +1,25 @@
+name: minecraft-easy-chunkloader
+version: '${version}'
+main: dev.cadu.chunkloader.ChunkLoaderPlugin
+api-version: '26.1.2'
+description: Keep chunks loaded with placeable Chunk Loader blocks - farms and redstone keep running even when nobody is nearby.
+author: cadu
+website: https://github.com/flipbit03/minecraft-easy-chunkloader
+
+commands:
+  chunkloader:
+    description: Manage chunk loaders
+    usage: /<command> <give|list|info|remove|gui|reload>
+    aliases: [cl, chunkload]
+    permission: chunkloader.use
+
+permissions:
+  chunkloader.use:
+    description: Place, break and inspect your own chunk loaders
+    default: true
+  chunkloader.admin:
+    description: Give chunk loaders, manage other players' loaders and reload the config
+    default: op
+  chunkloader.unlimited:
+    description: Bypass the per-player chunk loader limit
+    default: op
