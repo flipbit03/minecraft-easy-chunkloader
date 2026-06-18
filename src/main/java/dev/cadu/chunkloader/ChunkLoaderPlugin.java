@@ -3,6 +3,7 @@ package dev.cadu.chunkloader;
 import dev.cadu.chunkloader.command.ChunkLoaderCommand;
 import dev.cadu.chunkloader.listener.GuiListener;
 import dev.cadu.chunkloader.listener.LoaderBlockListener;
+import dev.cadu.chunkloader.listener.SpawnListener;
 import dev.cadu.chunkloader.listener.WorldListener;
 import org.bukkit.Location;
 import org.bukkit.Particle;
@@ -33,6 +34,7 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new LoaderBlockListener(this), this);
         getServer().getPluginManager().registerEvents(new GuiListener(this), this);
         getServer().getPluginManager().registerEvents(new WorldListener(this), this);
+        getServer().getPluginManager().registerEvents(new SpawnListener(this), this);
 
         PluginCommand command = getCommand("chunkloader");
         if (command != null) {

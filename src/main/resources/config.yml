@@ -25,6 +25,11 @@ max-radius: 4
 # There are no per-player loader limits. Admins control distribution (loaders are only
 # obtainable via /cl give) and can audit/remove everything with /cl list all and /cl gui all.
 
+# Stop mobs from spawning on top of the loader block (it's a full solid block, so hostiles
+# could otherwise spawn on it whenever a player is in range). Only blocks world-driven spawns
+# (natural, spawners, raids, …); deliberate ones (spawn eggs, breeding, /summon) still work.
+prevent-mob-spawns-on-loader: true
+
 # Ambient particle shown above active loaders so players can see they're working.
 particles:
   enabled: true
