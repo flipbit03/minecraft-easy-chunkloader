@@ -20,6 +20,7 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
 
     private BukkitTask particleTask;
     private BukkitTask revalidateTask;
+    private int particlePhase;
 
     @Override
     public void onEnable() {
@@ -112,7 +113,14 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
         if (particle.getDataType() != Void.class) {
             return; // particle needs extra data we don't supply; ignore to stay safe
         }
-        int count = Math.max(1, getConfig().getInt("particles.count", 8));
+        int count = Math.max(1, getConfig().getInt("particles.count", 12));
+        boolean glyphs = getConfig().getBoolean("particles.enchant-glyphs", true);
+
+        particlePhase++;
+        double phase = particlePhase * 0.35;          // rotates the aura ring each tick
+        int points = Math.max(6, count);
+        double ringRadius = 0.65;
+
         for (Loader loader : manager.all()) {
             World world = loader.bukkitWorld();
             if (world == null || !world.isChunkLoaded(loader.chunkX(), loader.chunkZ())) {
@@ -121,8 +129,27 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
             if (world.getBlockAt(loader.x(), loader.y(), loader.z()).getType() != item.material()) {
                 continue;
             }
-            Location at = new Location(world, loader.x() + 0.5, loader.y() + 1.1, loader.z() + 0.5);
-            world.spawnParticle(particle, at, count, 0.25, 0.3, 0.25, 0.0);
+            double cx = loader.x() + 0.5;
+            double cz = loader.z() + 0.5;
+            double topY = loader.y() + 1.05;
+
+            // A rotating, gently bobbing ring of the configured particle: an aura around the block.
+            for (int i = 0; i < points; i++) {
+                double angle = phase + (2 * Math.PI * i) / points;
+                double px = cx + Math.cos(angle) * ringRadius;
+                double pz = cz + Math.sin(angle) * ringRadius;
+                double py = topY + 0.12 * Math.sin(phase + i);
+                world.spawnParticle(particle, px, py, pz, 1, 0.0, 0.0, 0.0, 0.0);
+            }
+            // A bright core spark hovering just above the block.
+            world.spawnParticle(particle, cx, topY + 0.55, cz, 2, 0.05, 0.08, 0.05, 0.0);
+
+            // Enchanting-table glyphs streaming into the block - the "enchanted" look.
+            if (glyphs) {
+                world.spawnParticle(Particle.ENCHANT,
+                        new Location(world, cx, loader.y() + 1.9, cz),
+                        Math.max(4, count), 0.35, 0.45, 0.35, 0.9);
+            }
         }
     }
 }

@@ -1,0 +1,10 @@
+loaders:
+- name: FX Test
+  world: world
+  x: 50
+  y: -60
+  z: 50
+  radius: 0
+  owner: 00000000-0000-0000-0000-000000000001
+  owner-name: TestOwner
+  created: 1700000000000
