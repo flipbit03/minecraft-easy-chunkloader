@@ -44,6 +44,37 @@ The plugin uses Paper's **plugin chunk ticket** API — no NMS, no packets:
 The radius is frozen per-loader at creation time, so changing `chunk-radius` later never
 silently resizes existing loaders.
 
+## Installation
+
+Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25**. It will
+*not* run on plain Spigot/Bukkit — it uses Paper-only APIs.
+
+1. Download `minecraft-easy-chunkloader-v<version>.jar` from the
+   [Releases page](https://github.com/flipbit03/minecraft-easy-chunkloader/releases)
+   (or build it yourself — see [Building](#building)).
+2. Drop the jar into your server's `plugins/` folder.
+3. Start (or restart) the server. A `plugins/minecraft-easy-chunkloader/config.yml` and an
+   (empty) `loaders.yml` are created on first run.
+4. Confirm it loaded: the console prints `minecraft-easy-chunkloader enabled`, and in-game
+   `/cl help` lists the commands.
+
+## Quick start
+
+1. **Get a Chunk Loader.** Craft one (default recipe: 4 iron blocks in the corners,
+   4 lodestone on the edges, an eye of ender in the center), or as an admin run
+   `/cl give <you> 1`.
+2. *(optional)* **Name it.** Rename the item in an anvil — e.g. `Iron Farm` — so you can
+   tell your loaders apart later.
+3. **Place it** at your farm/contraption. You'll see a confirmation message and the
+   surrounding chunks (a 3×3 area by default) are now kept loaded and ticking.
+4. **Verify.** Walk far away (or have everyone log off) and your farm keeps running.
+   Use `/cl list` or open the menu with `/cl` to see all your loaders; click one to
+   teleport to it, shift-click to remove it.
+5. **Remove** a loader by breaking the block (you get the item back, nickname intact) or
+   with `/cl remove` while looking at it.
+
+> Loaders persist across restarts automatically — there's nothing to re-arm after a reboot.
+
 ## Commands
 
 All under `/chunkloader` (aliases `/cl`, `/chunkload`):
