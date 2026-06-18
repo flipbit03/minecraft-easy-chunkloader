@@ -12,11 +12,12 @@
 loader-material: LODESTONE
 
 # How many chunks around the loader's own chunk to keep loaded.
-#   0 -> 1 chunk   (just the loader's chunk)
+#   0 -> 1 chunk   (just the loader's chunk) -- the default: one loader == one chunk,
+#                  for maximum precision over exactly which chunks stay loaded
 #   1 -> 3x3 = 9 chunks
 #   2 -> 5x5 = 25 chunks
 # Existing loaders keep the radius they were created with; this only affects new ones.
-chunk-radius: 1
+chunk-radius: 0
 
 # Hard cap on chunk-radius. Stops a typo in chunk-radius from force-loading half the world.
 max-radius: 4

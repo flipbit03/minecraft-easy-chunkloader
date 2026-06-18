@@ -65,8 +65,9 @@ Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25
    `/cl give <player> [amount]` (or `/cl give <you> 1` for themselves).
 2. *(optional)* **Name it.** Rename the item in an anvil — e.g. `Iron Farm` — so you can
    tell your loaders apart later.
-3. **Place it** at your farm/contraption. You'll see a confirmation message and the
-   surrounding chunks (a 3×3 area by default) are now kept loaded and ticking.
+3. **Place it** at your farm/contraption. You'll see a confirmation message and its chunk
+   is now kept loaded and ticking. By default each loader covers exactly **one chunk** —
+   raise `chunk-radius` in the config if you want a loader to cover a square area instead.
 4. **Verify.** Walk far away (or have everyone log off) and your farm keeps running.
    Use `/cl list` or open the menu with `/cl` to see your loaders.
 5. **Removing** a loader is admin-only (anti-grief): an admin mines the block (the item
