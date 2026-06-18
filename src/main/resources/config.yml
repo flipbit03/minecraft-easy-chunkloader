@@ -63,6 +63,7 @@ messages:
   # <index> <name> <world> <x> <y> <z> <chunks> <owner>
   list-entry: '<gray><index>.</gray> <aqua><name></aqua> <dark_gray>-</dark_gray> <white><world></white> @ <white><x>, <y>, <z></white> <dark_gray>(</dark_gray><gray><chunks> chunk(s), owner <owner></gray><dark_gray>)</dark_gray>'
   list-empty: '<gray>No chunk loaders placed yet.</gray>'
+  list-empty-own: '<gray>You have no chunk loaders. (Admins: use <white>/cl gui all</white> to see every loader.)</gray>'
 
 # Log every ticket add/remove to the console.
 debug: false

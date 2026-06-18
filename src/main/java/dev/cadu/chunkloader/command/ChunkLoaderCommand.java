@@ -34,7 +34,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) {
             if (sender instanceof Player player) {
-                openGui(player, false);
+                openGui(player, scopeAll(player, false));
             } else {
                 help(sender, label);
             }
@@ -102,9 +102,10 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        List<Loader> loaders = loadersFor(sender, all);
+        boolean effectiveAll = scopeAll(sender, all);
+        List<Loader> loaders = loadersFor(sender, effectiveAll);
         if (loaders.isEmpty()) {
-            plugin.messages().send(sender, "list-empty");
+            plugin.messages().send(sender, effectiveAll ? "list-empty" : "list-empty-own");
             return;
         }
         sender.sendMessage(plugin.messages().render("list-header", "count", String.valueOf(loaders.size())));
@@ -198,7 +199,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             plugin.messages().send(sender, "no-permission");
             return;
         }
-        openGui(player, all);
+        openGui(player, scopeAll(player, all));
     }
 
     private void reload(CommandSender sender) {
@@ -228,7 +229,18 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
     // ---- helpers --------------------------------------------------------------------
 
     private void openGui(Player player, boolean all) {
-        player.openInventory(new LoaderGui(player, loadersFor(player, all), all).getInventory());
+        List<Loader> loaders = loadersFor(player, all);
+        if (loaders.isEmpty()) {
+            // Don't open a confusing empty chest; say why it's empty instead.
+            plugin.messages().send(player, all ? "list-empty" : "list-empty-own");
+            return;
+        }
+        player.openInventory(new LoaderGui(player, loaders, all).getInventory());
+    }
+
+    /** Admins see every loader by default; regular players see only their own. */
+    private boolean scopeAll(CommandSender sender, boolean explicitAll) {
+        return explicitAll || sender.hasPermission("chunkloader.admin");
     }
 
     private List<Loader> loadersFor(CommandSender sender, boolean all) {

@@ -21,8 +21,9 @@ plugin, rebuilt from scratch and MIT-licensed.
 - **Survives restarts.** Loaders are saved to `loaders.yml` and their chunk tickets are
   re-applied automatically on every server start (including worlds loaded later by
   Multiverse).
-- **Management GUI** — `/cl` opens a view-only menu of your loaders (admins can shift-click
-  to remove one). No teleporting. Admins can browse everyone's loaders with `/cl gui all`.
+- **Management GUI** — `/cl` opens a view-only menu of loaders (admins see **every** loader
+  by default; regular players see the ones they placed). Admins can shift-click to remove one.
+  No teleporting.
 - **No player limits** — players place as many as they're given; admins control supply
   (`/cl give`) and can audit/remove everything via `/cl list all` and `/cl gui all`.
 - **Configurable radius** — load just the loader's chunk (default), or a square area around it.
@@ -83,9 +84,9 @@ All under `/chunkloader` (aliases `/cl`, `/chunkload`):
 
 | Command | Description |
 |---|---|
-| `/cl` | Open the management GUI (your loaders) |
-| `/cl gui [all]` | Open the GUI (`all` = every loader, admin only) |
-| `/cl list [all]` | List loaders in chat |
+| `/cl` | Open the management GUI (admins: all loaders; players: their own) |
+| `/cl gui [all]` | Open the GUI; `all` forces the global view (admin) |
+| `/cl list [all]` | List loaders in chat (admins default to all) |
 | `/cl info` | Inspect the loader you are looking at / standing on |
 | `/cl name <nickname...>` | Rename that loader (owner or admin) |
 | `/cl remove` | Remove that loader, returns the item (**admin only**) |
