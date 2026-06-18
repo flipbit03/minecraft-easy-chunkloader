@@ -103,7 +103,7 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
     }
 
     private void showParticles() {
-        int count = Math.max(1, getConfig().getInt("particles.count", 12));
+        int count = Math.max(1, getConfig().getInt("particles.count", 35));
         for (Loader loader : manager.all()) {
             World world = loader.bukkitWorld();
             if (world == null || !world.isChunkLoaded(loader.chunkX(), loader.chunkZ())) {

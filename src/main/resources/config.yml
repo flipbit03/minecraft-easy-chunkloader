@@ -37,7 +37,7 @@ particles:
   # How often (in ticks) to emit the runes. Lower = denser stream. 20 ticks = 1s.
   interval-ticks: 15
   # Number of rune glyphs emitted each time. Higher = thicker swirl.
-  count: 14
+  count: 35
 
 # Re-apply tickets / re-validate every loader on this interval (ticks). Also drops loaders
 # whose block was removed while the chunk was unloaded (e.g. WorldEdit). 0 disables it.
