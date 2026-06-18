@@ -52,6 +52,12 @@ silently resizes existing loaders.
 Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25**. It will
 *not* run on plain Spigot/Bukkit — it uses Paper-only APIs.
 
+> ⚠️ **Important — disable "pause when empty".** Since Minecraft 1.21.2 the server stops
+> ticking entirely after `pause-when-empty-seconds` (default **60**) with no players online.
+> A paused server ticks *nothing*, including force-loaded chunks — so chunk loaders only do
+> their job with nobody connected if you set **`pause-when-empty-seconds=0`** in
+> `server.properties` and restart. The plugin logs a warning on startup if this isn't set.
+
 1. Download `minecraft-easy-chunkloader-v<version>.jar` from the
    [Releases page](https://github.com/flipbit03/minecraft-easy-chunkloader/releases)
    (or build it yourself — see [Building](#building)).

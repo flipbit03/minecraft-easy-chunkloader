@@ -1,0 +1,111 @@
+Applying patches
+Starting org.bukkit.craftbukkit.Main
+2026-06-18T23:21:56.421391314Z ServerMain WARN Advanced terminal features are not available in this environment
+[20:21:56 INFO]: [bootstrap] Running Java 25 (OpenJDK 64-Bit Server VM 25.0.3+9-2-24.04.2-Ubuntu; Ubuntu null) on Linux 5.15.167.4-microsoft-standard-WSL2 (amd64)
+[20:21:56 INFO]: [bootstrap] Loading Paper 26.1.2-69-main@76d2ac7 (2026-06-03T17:32:02Z) for Minecraft 26.1.2
+[20:21:57 INFO]: [PluginInitializerManager] Initializing plugins...
+[20:21:57 INFO]: [PluginInitializerManager] Initialized 1 plugin
+[20:21:57 INFO]: [PluginInitializerManager] Bukkit plugins (1):
+ - minecraft-easy-chunkloader (dev-SNAPSHOT)
+WARNING: A terminally deprecated method in sun.misc.Unsafe has been called
+WARNING: sun.misc.Unsafe::objectFieldOffset has been called by org.joml.MemUtil$MemUtilUnsafe (file:/home/cadu/w/cadu/minecraft-easy-chunkloader/testrun/libraries/org/joml/joml/1.10.8/joml-1.10.8.jar)
+WARNING: Please consider reporting this to the maintainers of class org.joml.MemUtil$MemUtilUnsafe
+WARNING: sun.misc.Unsafe::objectFieldOffset will be removed in a future release
+[20:21:59 INFO]: Environment: Environment[sessionHost=https://sessionserver.mojang.com, servicesHost=https://api.minecraftservices.com, profilesHost=https://api.mojang.com, name=PROD]
+[20:21:59 INFO]: Found new data pack file/bukkit, loading it automatically
+[20:21:59 INFO]: Found new data pack paper, loading it automatically
+[20:22:00 INFO]: No existing world data, creating new world
+[20:22:00 ERROR]: No key layers in MapLike[{}]
+[20:22:00 INFO]: Loaded 1515 recipes
+[20:22:00 INFO]: Loaded 1617 advancements
+[20:22:00 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Initialising converters for DataConverter...
+[20:22:01 INFO]: [ca.spottedleaf.dataconverter.minecraft.datatypes.MCTypeRegistry] Finished initialising converters for DataConverter in 231.8ms
+[20:22:01 INFO]: Starting minecraft server version 26.1.2
+[20:22:01 INFO]: Loading properties
+[20:22:01 INFO]: This server is running Paper version 26.1.2-69-main@76d2ac7 (2026-06-03T17:32:02Z) (Implementing API version 26.1.2.build.69-stable)
+[20:22:01 INFO]: [spark] This server bundles the spark profiler. For more information please visit https://docs.papermc.io/paper/profiling
+[20:22:01 INFO]: Server Ping Player Sample Count: 12
+[20:22:01 INFO]: Using 4 threads for Netty based IO
+[20:22:01 INFO]: [MoonriseCommon] Paper is using 8 worker threads, 1 I/O threads
+[20:22:01 INFO]: Default game type: SURVIVAL
+[20:22:01 INFO]: Generating keypair
+[20:22:01 INFO]: Starting Minecraft server on *:25599
+[20:22:01 INFO]: Paper: Using libdeflate (Linux x86_64) compression from Velocity.
+[20:22:01 INFO]: Paper: Using OpenSSL 3.x.x (Linux x86_64) cipher from Velocity.
+[20:22:01 INFO]: [minecraft-easy-chunkloader] Loading server plugin minecraft-easy-chunkloader vdev-SNAPSHOT
+[20:22:01 WARN]: **** SERVER IS RUNNING IN OFFLINE/INSECURE MODE!
+[20:22:01 WARN]: The server will make no attempt to authenticate usernames. Beware.
+[20:22:01 WARN]: While this makes the game possible to play without internet access, it also opens up the ability for hackers to connect with any username they choose.
+[20:22:01 WARN]: To change this, set "online-mode" to "true" in the server.properties file.
+[20:22:01 INFO]: Preparing level "world"
+[20:22:02 INFO]: Selecting spawn point for level 'minecraft:overworld'...
+[20:22:02 INFO]: Selecting spawn point for level 'minecraft:the_nether'...
+[20:22:02 INFO]: Selecting spawn point for level 'minecraft:the_end'...
+[20:22:02 INFO]: Loading 0 persistent chunks for level 'minecraft:overworld'...
+[20:22:02 INFO]: Preparing spawn area: 100%
+[20:22:02 INFO]: Prepared spawn area in 949 ms
+[20:22:02 INFO]: Loading 0 persistent chunks for level 'minecraft:the_nether'...
+[20:22:02 INFO]: Preparing spawn area: 100%
+[20:22:02 INFO]: Prepared spawn area in 684 ms
+[20:22:02 INFO]: Loading 0 persistent chunks for level 'minecraft:the_end'...
+[20:22:02 INFO]: Preparing spawn area: 100%
+[20:22:02 INFO]: Prepared spawn area in 117 ms
+[20:22:02 INFO]: Done preparing level "world" (1.098s)
+[20:22:02 INFO]: [minecraft-easy-chunkloader] Enabling minecraft-easy-chunkloader vdev-SNAPSHOT
+[20:22:03 INFO]: [minecraft-easy-chunkloader] minecraft-easy-chunkloader enabled - 0 loader(s) keeping chunks alive.
+[20:22:03 INFO]: [spark] Starting background profiler...
+[20:22:03 INFO]: Starting remote control listener
+[20:22:03 INFO]: Thread RCON Listener started
+[20:22:03 INFO]: RCON running on 0.0.0.0:25575
+[20:22:03 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[20:22:03 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[20:22:03 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[20:22:03 INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[20:22:03 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[20:22:03 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[20:22:03 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[20:22:03 INFO]: Running delayed init tasks
+[20:22:03 INFO]: Done (7.602s)! For help, type "help"
+[20:22:03 INFO]: *************************************************************************************
+[20:22:03 INFO]: This is the first time you're starting this server.
+[20:22:03 INFO]: It's recommended you read our 'Getting Started' documentation for guidance.
+[20:22:03 INFO]: View this and more helpful information here: https://docs.papermc.io/paper/next-steps
+[20:22:03 INFO]: *************************************************************************************
+[20:22:03 INFO]: *** Currently you are 2 build(s) behind ***
+[20:22:03 INFO]: *** It is highly recommended to download the latest build from https://papermc.io/downloads/paper ***
+[20:22:04 INFO]: Thread RCON Client /127.0.0.1 started
+[20:22:16 INFO]: [3m[38;5;7m[Rcon: Stopping the server][0m
+[20:22:16 INFO]: Thread RCON Client /127.0.0.1 shutting down
+[20:22:16 INFO]: Stopping server
+[20:22:16 INFO]: [minecraft-easy-chunkloader] Disabling minecraft-easy-chunkloader vdev-SNAPSHOT
+[20:22:16 INFO]: Saving players
+[20:22:16 INFO]: Saving worlds
+[20:22:16 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:overworld
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'minecraft:overworld'
+[20:22:16 INFO]: [ChunkHolderManager] Halted chunk system for world 'minecraft:overworld'
+[20:22:16 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'minecraft:overworld'
+[20:22:16 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'minecraft:overworld' in 0.01s
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'minecraft:overworld'
+[20:22:16 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'minecraft:overworld'
+[20:22:16 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_nether
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'minecraft:the_nether'
+[20:22:16 INFO]: [ChunkHolderManager] Halted chunk system for world 'minecraft:the_nether'
+[20:22:16 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'minecraft:the_nether'
+[20:22:16 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'minecraft:the_nether' in 0.01s
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'minecraft:the_nether'
+[20:22:16 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'minecraft:the_nether'
+[20:22:16 INFO]: Saving chunks for level 'ServerLevel[world]'/minecraft:the_end
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk system to halt for world 'minecraft:the_end'
+[20:22:16 INFO]: [ChunkHolderManager] Halted chunk system for world 'minecraft:the_end'
+[20:22:16 INFO]: [ChunkHolderManager] Saving all chunkholders for world 'minecraft:the_end'
+[20:22:16 INFO]: [ChunkHolderManager] Saved 0 block chunks, 0 entity chunks, 0 poi chunks in world 'minecraft:the_end' in 0.01s
+[20:22:16 INFO]: [ChunkHolderManager] Waiting 60s for chunk I/O to halt for world 'minecraft:the_end'
+[20:22:16 INFO]: [ChunkHolderManager] Halted I/O scheduler for world 'minecraft:the_end'
+[20:22:16 INFO]: ThreadedAnvilChunkStorage (world): All chunks are saved
+[20:22:16 INFO]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[20:22:16 INFO]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[20:22:16 INFO]: ThreadedAnvilChunkStorage: All dimensions are saved
+[20:22:16 INFO]: Waiting for all RegionFile I/O tasks to complete...
+[20:22:16 INFO]: All RegionFile I/O tasks to complete
+[20:22:16 INFO]: [MoonriseCommon] Awaiting termination of worker pool for up to 60s...
+[20:22:16 INFO]: [MoonriseCommon] Awaiting termination of I/O pool for up to 60s...

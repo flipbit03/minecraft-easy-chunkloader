@@ -47,6 +47,39 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
 
         getLogger().info("minecraft-easy-chunkloader enabled - " + manager.all().size()
                 + " loader(s) keeping chunks alive.");
+        warnIfServerPausesWhenEmpty();
+    }
+
+    /**
+     * Since MC 1.21.2 the server stops ticking entirely after {@code pause-when-empty-seconds}
+     * with no players online - and a paused server ticks nothing, including our chunk-ticket
+     * chunks. That silently defeats the whole plugin, so warn loudly if it's enabled.
+     */
+    private void warnIfServerPausesWhenEmpty() {
+        try {
+            java.io.File props = new java.io.File("server.properties");
+            if (!props.exists()) {
+                return;
+            }
+            java.util.Properties p = new java.util.Properties();
+            try (var in = new java.io.FileInputStream(props)) {
+                p.load(in);
+            }
+            String raw = p.getProperty("pause-when-empty-seconds");
+            if (raw == null) {
+                return;
+            }
+            int seconds = Integer.parseInt(raw.trim());
+            if (seconds > 0) {
+                getLogger().warning("server.properties has pause-when-empty-seconds=" + seconds
+                        + ". The server stops ticking when no players are online, so chunk loaders"
+                        + " will NOT keep chunks running while the server is empty. Set"
+                        + " pause-when-empty-seconds=0 (and restart) for chunk loaders to work"
+                        + " with nobody connected.");
+            }
+        } catch (RuntimeException | java.io.IOException ignored) {
+            // best-effort advisory only; never block enable over this
+        }
     }
 
     @Override
