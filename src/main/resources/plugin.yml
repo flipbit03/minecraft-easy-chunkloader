@@ -15,11 +15,8 @@ commands:
 
 permissions:
   chunkloader.use:
-    description: Place, break and inspect your own chunk loaders
+    description: Place and inspect chunk loaders, and list/rename your own
     default: true
   chunkloader.admin:
-    description: Give chunk loaders, manage other players' loaders and reload the config
-    default: op
-  chunkloader.unlimited:
-    description: Bypass the per-player chunk loader limit
+    description: Give chunk loaders, mine/remove any loader, manage others and reload
     default: op

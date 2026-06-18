@@ -185,10 +185,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             loader.location().getWorld().dropItemNaturally(
                     loader.location(), plugin.item().createNamed(1, loader.name()));
         }
-        plugin.messages().send(player, "removed",
-                "name", loader.displayName(),
-                "used", String.valueOf(plugin.manager().countOf(player.getUniqueId())),
-                "limit", plugin.limitLabel(player));
+        plugin.messages().send(player, "removed", "name", loader.displayName());
     }
 
     private void gui(CommandSender sender, String[] args) {

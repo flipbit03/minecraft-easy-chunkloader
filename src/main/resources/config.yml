@@ -22,12 +22,8 @@ chunk-radius: 0
 # Hard cap on chunk-radius. Stops a typo in chunk-radius from force-loading half the world.
 max-radius: 4
 
-# Per-player limits on how many chunk loaders may be placed.
-limits:
-  # Default cap for players without a more specific permission. -1 means unlimited.
-  default: 5
-  # Players with chunkloader.unlimited (default: op) ignore the cap entirely.
-  # You can also grant a numeric override permission, e.g. chunkloader.limit.20
+# There are no per-player loader limits. Admins control distribution (loaders are only
+# obtainable via /cl give) and can audit/remove everything with /cl list all and /cl gui all.
 
 # Ambient particle shown above active loaders so players can see they're working.
 particles:
@@ -47,12 +43,11 @@ prefix: '<gradient:#41c7c7:#3aa0ff><bold>ChunkLoader</bold></gradient> <dark_gra
 
 # All player-facing messages. MiniMessage format. Available placeholders are noted per line.
 messages:
-  # <name> <x> <y> <z> <world> <chunks> <used> <limit>
-  placed: '<green>Chunk loader <white><name></white> placed. Keeping <white><chunks></white> chunk(s) loaded. <gray>(<used>/<limit>)</gray>'
-  removed: '<yellow>Chunk loader <white><name></white> removed. <gray>(<used>/<limit>)</gray>'
+  # <name> <x> <y> <z> <world> <chunks>
+  placed: '<green>Chunk loader <white><name></white> placed. Keeping <white><chunks></white> chunk(s) loaded.</green>'
+  removed: '<yellow>Chunk loader <white><name></white> removed.</yellow>'
   renamed: '<green>Renamed chunk loader to <white><name></white>.</green>'
   name-usage: '<yellow>Usage: /<command> name <nickname...></yellow>'
-  limit-reached: '<red>You have reached your chunk loader limit of <white><limit></white>.</red>'
   no-permission: '<red>You do not have permission to do that.</red>'
   protected: '<red>This chunk loader is protected - only an admin can remove it.</red>'
   not-a-loader: '<red>You are not looking at (or standing on) a chunk loader.</red>'

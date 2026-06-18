@@ -8,7 +8,6 @@ import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.World;
 import org.bukkit.command.PluginCommand;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.bukkit.scheduler.BukkitTask;
 
@@ -70,12 +69,6 @@ public final class ChunkLoaderPlugin extends JavaPlugin {
 
     public Messages messages() {
         return messages;
-    }
-
-    /** Human label for a player's limit: the number, or {@code ∞} when unlimited. */
-    public String limitLabel(Player player) {
-        int limit = manager.effectiveLimit(player);
-        return limit < 0 ? "∞" : String.valueOf(limit);
     }
 
     // ---- scheduled tasks ------------------------------------------------------------

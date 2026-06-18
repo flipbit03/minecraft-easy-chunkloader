@@ -23,8 +23,9 @@ plugin, rebuilt from scratch and MIT-licensed.
   Multiverse).
 - **Management GUI** — `/cl` opens a view-only menu of your loaders (admins can shift-click
   to remove one). No teleporting. Admins can browse everyone's loaders with `/cl gui all`.
-- **Per-player limits** via config or numeric permission, with an unlimited bypass.
-- **Configurable radius** — load just the loader's chunk, or a square area around it.
+- **No player limits** — players place as many as they're given; admins control supply
+  (`/cl give`) and can audit/remove everything via `/cl list all` and `/cl gui all`.
+- **Configurable radius** — load just the loader's chunk (default), or a square area around it.
 - **Ambient particles** above active loaders so you can see them working.
 - Every message is MiniMessage and lives in `config.yml` — fully re-skinnable / translatable.
 
@@ -95,16 +96,14 @@ All under `/chunkloader` (aliases `/cl`, `/chunkload`):
 
 | Permission | Default | Description |
 |---|---|---|
-| `chunkloader.use` | everyone | Place, break and inspect your own loaders |
-| `chunkloader.admin` | op | Give items, manage others' loaders, reload |
-| `chunkloader.unlimited` | op | Bypass the per-player loader limit |
-| `chunkloader.limit.<n>` | — | Grant a specific per-player limit (highest granted wins) |
+| `chunkloader.use` | everyone | Place and inspect loaders; list/rename your own |
+| `chunkloader.admin` | op | Give items, mine/remove any loader, manage others, reload |
 
 ## Configuration
 
 See [`src/main/resources/config.yml`](src/main/resources/config.yml): loader material,
-chunk radius (and a `max-radius` safety cap), per-player limits, particle effect,
-revalidation interval, and all messages.
+chunk radius (and a `max-radius` safety cap), particle effect, revalidation interval,
+and all messages.
 
 ## Building
 

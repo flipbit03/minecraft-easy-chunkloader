@@ -52,11 +52,7 @@ public final class GuiListener implements Listener {
             location.getBlock().setType(org.bukkit.Material.AIR);
             location.getWorld().dropItemNaturally(location, plugin.item().createNamed(1, loader.name()));
         }
-        int used = plugin.manager().countOf(loader.owner());
-        plugin.messages().send(player, "removed",
-                "name", loader.displayName(),
-                "used", String.valueOf(used),
-                "limit", plugin.limitLabel(player));
+        plugin.messages().send(player, "removed", "name", loader.displayName());
         player.closeInventory();
     }
 }

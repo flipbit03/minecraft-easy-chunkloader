@@ -4,7 +4,6 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.permissions.PermissionAttachmentInfo;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,8 +16,8 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Owns the set of placed chunk loaders: persistence (loaders.yml), the Paper plugin
- * chunk tickets that actually keep chunks loaded, and the per-player limit logic.
+ * Owns the set of placed chunk loaders: persistence (loaders.yml) and the Paper plugin
+ * chunk tickets that actually keep chunks loaded.
  *
  * <p>Tickets are held via {@link World#addPluginChunkTicket(int, int, org.bukkit.plugin.Plugin)}.
  * A plugin ticket keeps a chunk fully loaded and ticking until it is explicitly removed,
@@ -26,8 +25,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * authoritative source of truth is always loaders.yml, not whatever Paper happened to save.
  */
 public final class ChunkLoaderManager {
-
-    private static final String LIMIT_PERMISSION_PREFIX = "chunkloader.limit.";
 
     private final ChunkLoaderPlugin plugin;
     private final File dataFile;
@@ -42,39 +39,9 @@ public final class ChunkLoaderManager {
 
     /** The radius new loaders are created with, clamped to {@code max-radius}. */
     public int configuredRadius() {
-        int radius = plugin.getConfig().getInt("chunk-radius", 1);
+        int radius = plugin.getConfig().getInt("chunk-radius", 0);
         int max = Math.max(0, plugin.getConfig().getInt("max-radius", 4));
         return Math.max(0, Math.min(radius, max));
-    }
-
-    /**
-     * Highest chunk-loader count a player may place. {@code -1} means unlimited
-     * (granted by {@code chunkloader.unlimited} or a {@code limits.default} of -1).
-     */
-    public int effectiveLimit(Player player) {
-        if (player.hasPermission("chunkloader.unlimited")) {
-            return -1;
-        }
-        int limit = plugin.getConfig().getInt("limits.default", 5);
-        for (PermissionAttachmentInfo info : player.getEffectivePermissions()) {
-            if (!info.getValue()) {
-                continue;
-            }
-            String node = info.getPermission().toLowerCase();
-            if (node.startsWith(LIMIT_PERMISSION_PREFIX)) {
-                try {
-                    limit = Math.max(limit, Integer.parseInt(node.substring(LIMIT_PERMISSION_PREFIX.length())));
-                } catch (NumberFormatException ignored) {
-                    // chunkloader.limit.* wildcard or a non-numeric suffix; skip it
-                }
-            }
-        }
-        return limit;
-    }
-
-    public boolean atLimit(Player player) {
-        int limit = effectiveLimit(player);
-        return limit >= 0 && countOf(player.getUniqueId()) >= limit;
     }
 
     // ---- registry queries -----------------------------------------------------------
@@ -99,16 +66,6 @@ public final class ChunkLoaderManager {
             }
         }
         return result;
-    }
-
-    public int countOf(UUID owner) {
-        int count = 0;
-        for (Loader loader : loaders.values()) {
-            if (loader.owner().equals(owner)) {
-                count++;
-            }
-        }
-        return count;
     }
 
     // ---- mutations ------------------------------------------------------------------

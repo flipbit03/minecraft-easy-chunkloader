@@ -42,12 +42,6 @@ public final class LoaderBlockListener implements Listener {
             plugin.messages().send(player, "no-permission");
             return;
         }
-        if (plugin.manager().atLimit(player)) {
-            event.setCancelled(true);
-            plugin.messages().send(player, "limit-reached", "limit", plugin.limitLabel(player));
-            return;
-        }
-
         Location location = event.getBlock().getLocation();
         Loader loader = plugin.manager().create(location, player, plugin.item().customName(inHand));
         plugin.messages().send(player, "placed",
@@ -56,9 +50,7 @@ public final class LoaderBlockListener implements Listener {
                 "world", loader.world(),
                 "x", String.valueOf(loader.x()),
                 "y", String.valueOf(loader.y()),
-                "z", String.valueOf(loader.z()),
-                "used", String.valueOf(plugin.manager().countOf(player.getUniqueId())),
-                "limit", plugin.limitLabel(player));
+                "z", String.valueOf(loader.z()));
     }
 
     @EventHandler(priority = EventPriority.LOW, ignoreCancelled = true)
@@ -81,10 +73,7 @@ public final class LoaderBlockListener implements Listener {
         event.setDropItems(false);
         event.getBlock().getWorld().dropItemNaturally(
                 event.getBlock().getLocation(), plugin.item().createNamed(1, loader.name()));
-        plugin.messages().send(player, "removed",
-                "name", loader.displayName(),
-                "used", String.valueOf(plugin.manager().countOf(player.getUniqueId())),
-                "limit", plugin.limitLabel(player));
+        plugin.messages().send(player, "removed", "name", loader.displayName());
     }
 
     @EventHandler(ignoreCancelled = true)
