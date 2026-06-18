@@ -30,20 +30,14 @@ max-radius: 4
 # (natural, spawners, raids, …); deliberate ones (spawn eggs, breeding, /summon) still work.
 prevent-mob-spawns-on-loader: true
 
-# Ambient "enchanted" aura shown above active loaders so players can see they're working.
-# The configured particle is drawn as a slowly rotating ring around the block, plus a bright
-# core spark, plus (optionally) enchanting-table glyphs streaming into it.
+# Enchanting-table runes shown above active loaders so players can see they're working.
+# The runes spawn in a cloud above the block and stream down into it.
 particles:
   enabled: true
-  # Any org.bukkit.Particle name (data-less ones only). ELECTRIC_SPARK / END_ROD /
-  # SOUL_FIRE_FLAME / GLOW / WAX_ON all look good as the aura.
-  type: ELECTRIC_SPARK
-  # How often (in ticks) to refresh the effect. Lower = smoother rotation. 20 ticks = 1s.
+  # How often (in ticks) to emit the runes. Lower = denser stream. 20 ticks = 1s.
   interval-ticks: 15
-  # Number of particles in the ring (also the glyph count). Higher = denser aura.
+  # Number of rune glyphs emitted each time. Higher = thicker swirl.
   count: 14
-  # Stream enchanting-table glyphs into the block for an enchanted look.
-  enchant-glyphs: true
 
 # Re-apply tickets / re-validate every loader on this interval (ticks). Also drops loaders
 # whose block was removed while the chunk was unloaded (e.g. WorldEdit). 0 disables it.
