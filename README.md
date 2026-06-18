@@ -21,8 +21,8 @@ plugin, rebuilt from scratch and MIT-licensed.
 - **Survives restarts.** Loaders are saved to `loaders.yml` and their chunk tickets are
   re-applied automatically on every server start (including worlds loaded later by
   Multiverse).
-- **Management GUI** — `/cl` opens a menu of your loaders; left-click to teleport to one
-  (admins can shift-click to remove). Admins can browse everyone's loaders with `/cl gui all`.
+- **Management GUI** — `/cl` opens a view-only menu of your loaders (admins can shift-click
+  to remove one). No teleporting. Admins can browse everyone's loaders with `/cl gui all`.
 - **Per-player limits** via config or numeric permission, with an unlimited bypass.
 - **Configurable radius** — load just the loader's chunk, or a square area around it.
 - **Ambient particles** above active loaders so you can see them working.
@@ -68,7 +68,7 @@ Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25
 3. **Place it** at your farm/contraption. You'll see a confirmation message and the
    surrounding chunks (a 3×3 area by default) are now kept loaded and ticking.
 4. **Verify.** Walk far away (or have everyone log off) and your farm keeps running.
-   Use `/cl list` or open the menu with `/cl` to see your loaders and teleport to them.
+   Use `/cl list` or open the menu with `/cl` to see your loaders.
 5. **Removing** a loader is admin-only (anti-grief): an admin mines the block (the item
    drops back, nickname intact), uses `/cl remove` while looking at it, or shift-clicks it
    in `/cl gui all`. Normal players cannot break or move a placed loader.

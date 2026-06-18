@@ -18,16 +18,18 @@ import java.util.List;
 /**
  * A chest-style menu listing chunk loaders, one compass per loader showing its nickname
  * and location. The holder keeps the slot -> loader mapping so the click listener can map
- * a clicked slot straight back to a loader. Left-click teleports, shift-click removes.
+ * a clicked slot straight back to a loader. View-only; admins may shift-click to remove.
  */
 public final class LoaderGui implements InventoryHolder {
 
     private final Inventory inventory;
     private final List<Loader> slots = new ArrayList<>();
     private final boolean adminView;
+    private final boolean canManage;
 
     public LoaderGui(Player viewer, List<Loader> loaders, boolean adminView) {
         this.adminView = adminView;
+        this.canManage = viewer.hasPermission("chunkloader.admin");
         int size = Math.min(54, Math.max(9, ((loaders.size() + 8) / 9) * 9));
         this.inventory = Bukkit.createInventory(this, size,
                 Component.text("Chunk Loaders", NamedTextColor.DARK_AQUA));
@@ -54,9 +56,10 @@ public final class LoaderGui implements InventoryHolder {
         if (adminView) {
             lore.add(line("Owner: " + loader.ownerName(), NamedTextColor.DARK_GRAY));
         }
-        lore.add(Component.empty());
-        lore.add(line("Left-click: teleport", NamedTextColor.GREEN));
-        lore.add(line("Shift-click: remove", NamedTextColor.RED));
+        if (canManage) {
+            lore.add(Component.empty());
+            lore.add(line("Shift-click: remove", NamedTextColor.RED));
+        }
         meta.lore(lore);
 
         item.setItemMeta(meta);
