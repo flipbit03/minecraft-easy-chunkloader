@@ -2,10 +2,10 @@ package dev.cadu.chunkloader.command;
 
 import dev.cadu.chunkloader.ChunkLoaderPlugin;
 import dev.cadu.chunkloader.Loader;
+import dev.cadu.chunkloader.Messages;
 import dev.cadu.chunkloader.gui.LoaderGui;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.block.Block;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -65,13 +65,13 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
         if (args.length >= 2) {
             target = Bukkit.getPlayerExact(args[1]);
             if (target == null) {
-                sender.sendMessage(Component.text("Player '" + args[1] + "' is not online.", NamedTextColor.RED));
+                sender.sendMessage(ChatColor.RED + "Player '" + Messages.literal(args[1]) + "' is not online.");
                 return;
             }
         } else if (sender instanceof Player player) {
             target = player;
         } else {
-            sender.sendMessage(Component.text("Usage: /chunkloader give <player> [amount]", NamedTextColor.YELLOW));
+            sender.sendMessage(ChatColor.YELLOW + "Usage: /chunkloader give <player> [amount]");
             return;
         }
 
@@ -80,7 +80,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             try {
                 amount = Math.max(1, Math.min(64, Integer.parseInt(args[2])));
             } catch (NumberFormatException ex) {
-                sender.sendMessage(Component.text("'" + args[2] + "' is not a number.", NamedTextColor.RED));
+                sender.sendMessage(ChatColor.RED + "'" + Messages.literal(args[2]) + "' is not a number.");
                 return;
             }
         }
@@ -125,7 +125,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
 
     private void info(CommandSender sender) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Only players can use that.", NamedTextColor.RED));
+            sender.sendMessage(ChatColor.RED + "Only players can use that.");
             return;
         }
         Loader loader = targetLoader(player);
@@ -133,19 +133,17 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
             plugin.messages().send(player, "not-a-loader");
             return;
         }
-        player.sendMessage(Component.text(loader.displayName(), NamedTextColor.AQUA));
-        player.sendMessage(Component.text("  World: " + loader.world(), NamedTextColor.GRAY));
-        player.sendMessage(Component.text(
-                "  Location: " + loader.x() + ", " + loader.y() + ", " + loader.z()
-                        + " (chunk " + loader.chunkX() + ", " + loader.chunkZ() + ")", NamedTextColor.GRAY));
-        player.sendMessage(Component.text(
-                "  Radius: " + loader.radius() + " (" + loader.chunkCount() + " chunks)", NamedTextColor.GRAY));
-        player.sendMessage(Component.text("  Owner: " + loader.ownerName(), NamedTextColor.GRAY));
+        player.sendMessage(ChatColor.AQUA + Messages.literal(loader.displayName()));
+        player.sendMessage(ChatColor.GRAY + "  World: " + Messages.literal(loader.world()));
+        player.sendMessage(ChatColor.GRAY + "  Location: " + loader.x() + ", " + loader.y() + ", " + loader.z()
+                + " (chunk " + loader.chunkX() + ", " + loader.chunkZ() + ")");
+        player.sendMessage(ChatColor.GRAY + "  Radius: " + loader.radius() + " (" + loader.chunkCount() + " chunks)");
+        player.sendMessage(ChatColor.GRAY + "  Owner: " + Messages.literal(loader.ownerName()));
     }
 
     private void name(CommandSender sender, String label, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Only players can use that.", NamedTextColor.RED));
+            sender.sendMessage(ChatColor.RED + "Only players can use that.");
             return;
         }
         if (args.length < 2) {
@@ -168,7 +166,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
 
     private void remove(CommandSender sender) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Only players can use that.", NamedTextColor.RED));
+            sender.sendMessage(ChatColor.RED + "Only players can use that.");
             return;
         }
         if (!player.hasPermission("chunkloader.admin")) {
@@ -191,7 +189,7 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
 
     private void gui(CommandSender sender, String[] args) {
         if (!(sender instanceof Player player)) {
-            sender.sendMessage(Component.text("Only players can open the menu.", NamedTextColor.RED));
+            sender.sendMessage(ChatColor.RED + "Only players can open the menu.");
             return;
         }
         boolean all = args.length >= 2 && args[1].equalsIgnoreCase("all");
@@ -214,15 +212,15 @@ public final class ChunkLoaderCommand implements CommandExecutor, TabCompleter {
     }
 
     private void help(CommandSender sender, String label) {
-        sender.sendMessage(Component.text("ChunkLoader commands:", NamedTextColor.AQUA));
-        sender.sendMessage(Component.text("  /" + label + " gui [all]   - open the loader menu", NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("  /" + label + " list [all]  - list loaders", NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("  /" + label + " info        - inspect the loader you look at", NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("  /" + label + " name <text> - rename that loader", NamedTextColor.GRAY));
-        sender.sendMessage(Component.text("  /" + label + " remove      - remove that loader", NamedTextColor.GRAY));
+        sender.sendMessage(ChatColor.AQUA + "ChunkLoader commands:");
+        sender.sendMessage(ChatColor.GRAY + "  /" + label + " gui [all]   - open the loader menu");
+        sender.sendMessage(ChatColor.GRAY + "  /" + label + " list [all]  - list loaders");
+        sender.sendMessage(ChatColor.GRAY + "  /" + label + " info        - inspect the loader you look at");
+        sender.sendMessage(ChatColor.GRAY + "  /" + label + " name <text> - rename that loader");
+        sender.sendMessage(ChatColor.GRAY + "  /" + label + " remove      - remove that loader");
         if (sender.hasPermission("chunkloader.admin")) {
-            sender.sendMessage(Component.text("  /" + label + " give <player> [amount] - give loader items", NamedTextColor.GRAY));
-            sender.sendMessage(Component.text("  /" + label + " reload      - reload the config", NamedTextColor.GRAY));
+            sender.sendMessage(ChatColor.GRAY + "  /" + label + " give <player> [amount] - give loader items");
+            sender.sendMessage(ChatColor.GRAY + "  /" + label + " reload      - reload the config");
         }
     }
 

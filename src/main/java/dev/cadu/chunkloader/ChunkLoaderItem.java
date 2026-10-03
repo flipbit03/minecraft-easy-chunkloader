@@ -1,16 +1,12 @@
 package dev.cadu.chunkloader;
 
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
-import net.kyori.adventure.text.serializer.plain.PlainTextComponentSerializer;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
-
-import java.util.List;
 
 /**
  * Builds the Chunk Loader item and recognises it again later. The item is just the
@@ -36,7 +32,7 @@ public final class ChunkLoaderItem {
 
     public Material material() {
         Material material = Material.matchMaterial(plugin.getConfig().getString("loader-material", "LODESTONE"));
-        if (material == null || !material.isBlock()) {
+        if (material == null || !material.isBlock() || !material.isItem()) {
             plugin.getLogger().warning("loader-material '" + plugin.getConfig().getString("loader-material")
                     + "' is not a placeable block; falling back to LODESTONE.");
             return Material.LODESTONE;
@@ -46,41 +42,43 @@ public final class ChunkLoaderItem {
 
     /** A fresh stack of chunk loaders. */
     public ItemStack create(int amount) {
-        ItemStack item = new ItemStack(material(), Math.max(1, amount));
-        ItemMeta meta = item.getItemMeta();
-
-        meta.displayName(Component.text(DEFAULT_NAME, NamedTextColor.AQUA)
-                .decoration(TextDecoration.ITALIC, false));
-        meta.lore(List.of(
-                Component.text("Place to keep the surrounding", NamedTextColor.GRAY)
-                        .decoration(TextDecoration.ITALIC, false),
-                Component.text("chunks loaded and ticking.", NamedTextColor.GRAY)
-                        .decoration(TextDecoration.ITALIC, false),
-                Component.empty(),
-                Component.text("Rename in an anvil to set its", NamedTextColor.DARK_GRAY)
-                        .decoration(TextDecoration.ITALIC, false),
-                Component.text("nickname (e.g. \"Iron Farm\").", NamedTextColor.DARK_GRAY)
-                        .decoration(TextDecoration.ITALIC, false),
-                Component.text("Only an admin can remove it once placed.", NamedTextColor.DARK_GRAY)
-                        .decoration(TextDecoration.ITALIC, false)
-        ));
-        meta.getPersistentDataContainer().set(markerKey, PersistentDataType.BYTE, (byte) 1);
-        meta.setEnchantmentGlintOverride(true);
-
-        item.setItemMeta(meta);
-        return item;
+        return build(amount, DEFAULT_NAME);
     }
 
     /** A chunk loader stack pre-named with {@code name} (as if renamed in an anvil). */
     public ItemStack createNamed(int amount, String name) {
-        ItemStack item = create(amount);
-        if (name != null && !name.isBlank()) {
-            ItemMeta meta = item.getItemMeta();
-            meta.displayName(Component.text(name, NamedTextColor.AQUA)
-                    .decoration(TextDecoration.ITALIC, false));
-            item.setItemMeta(meta);
-        }
+        return build(amount, name != null && !name.isBlank() ? name : DEFAULT_NAME);
+    }
+
+    /**
+     * Builds the item from the exact name/lore components the earlier (Paper) releases wrote:
+     * coloured text with italic switched off. {@code setDisplayName}/{@code setLore} would look
+     * the same but store differently shaped components, so loaders handed out before and after
+     * the move to Spigot would no longer stack with each other.
+     */
+    @SuppressWarnings("deprecation") // Material#getKeyOrThrow() is Spigot-only; Paper lacks it
+    private ItemStack build(int amount, String name) {
+        String components = "[custom_name=" + text(name, "aqua")
+                + ",lore=[" + text("Place to keep the surrounding", "gray")
+                + "," + text("chunks loaded and ticking.", "gray")
+                + ",\"\""
+                + "," + text("Rename in an anvil to set its", "dark_gray")
+                + "," + text("nickname (e.g. \"Iron Farm\").", "dark_gray")
+                + "," + text("Only an admin can remove it once placed.", "dark_gray")
+                + "],enchantment_glint_override=true]";
+        ItemStack item = Bukkit.getItemFactory().createItemStack(material().getKey() + components);
+        item.setAmount(Math.max(1, amount));
+
+        ItemMeta meta = item.getItemMeta();
+        meta.getPersistentDataContainer().set(markerKey, PersistentDataType.BYTE, (byte) 1);
+        item.setItemMeta(meta);
         return item;
+    }
+
+    /** An SNBT text component: {@code text} in {@code color}, not italic. */
+    private static String text(String text, String color) {
+        String quoted = text.replace("\\", "\\\\").replace("\"", "\\\"");
+        return "{text:\"" + quoted + "\",color:\"" + color + "\",italic:false}";
     }
 
     /** True if the stack is one of our chunk loaders (checks the marker, not the name). */
@@ -105,7 +103,7 @@ public final class ChunkLoaderItem {
         if (meta == null || !meta.hasDisplayName()) {
             return null;
         }
-        String plain = PlainTextComponentSerializer.plainText().serialize(meta.displayName()).trim();
+        String plain = ChatColor.stripColor(meta.getDisplayName()).trim();
         return plain.isEmpty() || plain.equals(DEFAULT_NAME) ? null : plain;
     }
 }

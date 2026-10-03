@@ -1,6 +1,6 @@
 # minecraft-easy-chunkloader
 
-A free, fully open-source [Paper](https://papermc.io) plugin (Paper **26.1.2**, Java **25**)
+A free, fully open-source [Spigot](https://www.spigotmc.org) plugin (Minecraft **26.x**, Java **25**)
 that lets players keep chunks loaded with a simple placeable **Chunk Loader** block — so
 farms, furnaces, redstone clocks and mob spawners keep running even when nobody is nearby.
 
@@ -28,14 +28,15 @@ plugin, rebuilt from scratch and MIT-licensed.
   (`/cl give`) and can audit/remove everything via `/cl list all` and `/cl gui all`.
 - **Configurable radius** — load just the loader's chunk (default), or a square area around it.
 - **Ambient particles** above active loaders so you can see them working.
-- Every message is MiniMessage and lives in `config.yml` — fully re-skinnable / translatable.
+- Every message lives in `config.yml` in MiniMessage format (colours, hex, gradients,
+  bold/italic, …) — fully re-skinnable / translatable.
 
 ## How it works
 
-The plugin uses Paper's **plugin chunk ticket** API — no NMS, no packets:
+The plugin uses the Bukkit **plugin chunk ticket** API — no NMS, no packets:
 
 - On place of a Chunk Loader item, the plugin calls
-  [`World#addPluginChunkTicket`](https://jd.papermc.io/paper/26.1.2/org/bukkit/World.html)
+  [`World#addPluginChunkTicket`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/World.html#addPluginChunkTicket(int,int,org.bukkit.plugin.Plugin))
   for every chunk in the loader's radius. A plugin ticket keeps a chunk fully loaded and
   ticking until it is explicitly removed.
 - `loaders.yml` is the source of truth. On enable the plugin re-applies a ticket for every
@@ -49,8 +50,8 @@ silently resizes existing loaders.
 
 ## Installation
 
-Requires a **Paper 26.1.2** server (or a Paper fork such as Purpur) on **Java 25**. It will
-*not* run on plain Spigot/Bukkit — it uses Paper-only APIs.
+Requires a **Spigot** server for Minecraft **26.1.2 or newer** on **Java 25**. It only uses the
+Spigot API, so it also runs on Paper and its forks (e.g. Purpur), which load Spigot plugins.
 
 > ⚠️ **Important — disable "pause when empty".** Since Minecraft 1.21.2 the server stops
 > ticking entirely after `pause-when-empty-seconds` (default **60**) with no players online.
@@ -111,6 +112,12 @@ All under `/chunkloader` (aliases `/cl`, `/chunkload`):
 See [`src/main/resources/config.yml`](src/main/resources/config.yml): loader material,
 chunk radius (and a `max-radius` safety cap), particle effect, revalidation interval,
 and all messages.
+
+Messages use [MiniMessage](https://docs.advntr.dev/minimessage/format.html) tags, rendered by
+the plugin itself (Spigot doesn't ship MiniMessage): colours (`<red>`, `<#41c7c7>`,
+`<color:...>`), decorations (`<bold>`, `<!italic>`, …), `<gradient:...>`, `<reset>` and
+`<newline>`. Other tags (e.g. `<hover>`, `<click>`, `<rainbow>`, `<font>`) aren't supported and
+are shown as plain text.
 
 ## Building
 

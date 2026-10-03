@@ -1,10 +1,9 @@
 package dev.cadu.chunkloader.gui;
 
 import dev.cadu.chunkloader.Loader;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.NamedTextColor;
-import net.kyori.adventure.text.format.TextDecoration;
+import dev.cadu.chunkloader.Messages;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
@@ -31,8 +30,7 @@ public final class LoaderGui implements InventoryHolder {
         this.adminView = adminView;
         this.canManage = viewer.hasPermission("chunkloader.admin");
         int size = Math.min(54, Math.max(9, ((loaders.size() + 8) / 9) * 9));
-        this.inventory = Bukkit.createInventory(this, size,
-                Component.text("Chunk Loaders", NamedTextColor.DARK_AQUA));
+        this.inventory = Bukkit.createInventory(this, size, ChatColor.DARK_AQUA + "Chunk Loaders");
 
         for (Loader loader : loaders) {
             if (slots.size() >= size) {
@@ -46,28 +44,28 @@ public final class LoaderGui implements InventoryHolder {
     private ItemStack icon(Loader loader) {
         ItemStack item = new ItemStack(Material.COMPASS);
         ItemMeta meta = item.getItemMeta();
-        meta.displayName(Component.text(loader.displayName(), NamedTextColor.AQUA)
-                .decoration(TextDecoration.ITALIC, false));
+        meta.setDisplayName(line(loader.displayName(), ChatColor.AQUA));
 
-        List<Component> lore = new ArrayList<>();
+        List<String> lore = new ArrayList<>();
         lore.add(line(loader.world() + " @ " + loader.x() + ", " + loader.y() + ", " + loader.z(),
-                NamedTextColor.GRAY));
-        lore.add(line(loader.chunkCount() + " chunk(s) loaded", NamedTextColor.GRAY));
+                ChatColor.GRAY));
+        lore.add(line(loader.chunkCount() + " chunk(s) loaded", ChatColor.GRAY));
         if (adminView) {
-            lore.add(line("Owner: " + loader.ownerName(), NamedTextColor.DARK_GRAY));
+            lore.add(line("Owner: " + loader.ownerName(), ChatColor.DARK_GRAY));
         }
         if (canManage) {
-            lore.add(Component.empty());
-            lore.add(line("Shift-click: remove", NamedTextColor.RED));
+            lore.add("");
+            lore.add(line("Shift-click: remove", ChatColor.RED));
         }
-        meta.lore(lore);
+        meta.setLore(lore);
 
         item.setItemMeta(meta);
         return item;
     }
 
-    private static Component line(String text, NamedTextColor color) {
-        return Component.text(text, color).decoration(TextDecoration.ITALIC, false);
+    /** Coloured, non-italic item text (a legacy colour code also turns italic off). */
+    private static String line(String text, ChatColor color) {
+        return color + Messages.literal(text);
     }
 
     /** The loader shown in {@code slot}, or {@code null} if that slot is empty. */

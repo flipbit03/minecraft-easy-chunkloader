@@ -46,13 +46,17 @@ public final class GuiListener implements Listener {
             return;
         }
         Location location = loader.location();
-        plugin.manager().removeAt(loader.location());
-        // return the item to the world / give it back, mirroring a manual break
-        if (location != null && location.getWorld() != null) {
-            location.getBlock().setType(org.bukkit.Material.AIR);
-            location.getWorld().dropItemNaturally(location, plugin.item().createNamed(1, loader.name()));
+        Loader removed = location == null ? null : plugin.manager().removeAt(location);
+        if (removed == null) {
+            // Stale menu: the loader was removed since it opened, or its world isn't loaded.
+            plugin.messages().send(player, "loader-gone");
+            player.closeInventory();
+            return;
         }
-        plugin.messages().send(player, "removed", "name", loader.displayName());
+        // return the item to the world / give it back, mirroring a manual break
+        location.getBlock().setType(org.bukkit.Material.AIR);
+        location.getWorld().dropItemNaturally(location, plugin.item().createNamed(1, removed.name()));
+        plugin.messages().send(player, "removed", "name", removed.displayName());
         player.closeInventory();
     }
 }

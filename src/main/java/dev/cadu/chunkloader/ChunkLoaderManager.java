@@ -16,13 +16,13 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
- * Owns the set of placed chunk loaders: persistence (loaders.yml) and the Paper plugin
- * chunk tickets that actually keep chunks loaded.
+ * Owns the set of placed chunk loaders: persistence (loaders.yml) and the plugin chunk
+ * tickets that actually keep chunks loaded.
  *
  * <p>Tickets are held via {@link World#addPluginChunkTicket(int, int, org.bukkit.plugin.Plugin)}.
  * A plugin ticket keeps a chunk fully loaded and ticking until it is explicitly removed,
- * and Paper persists our tickets across restarts; we still re-apply them on enable so the
- * authoritative source of truth is always loaders.yml, not whatever Paper happened to save.
+ * and we re-apply them on enable so the authoritative source of truth is always loaders.yml,
+ * not whatever the server happened to save.
  */
 public final class ChunkLoaderManager {
 
